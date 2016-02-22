@@ -8,7 +8,7 @@ public class Movement : MonoBehaviour
 	public float jumpPower;
 	public bool isJumping = false;
 	private bool isGrounded;
-
+	public Transform target;
 
 	void Start ()
 	{
@@ -18,6 +18,7 @@ public class Movement : MonoBehaviour
 
 	void Update ()
 	{
+		
 
 		//Settings for the parameters in the Animator Controller
 		if(Input.GetKey(KeyCode.A))
@@ -25,6 +26,7 @@ public class Movement : MonoBehaviour
 			anim.SetFloat("SpeedLeft", Mathf.Abs(3F)); 
 			anim.SetBool ("Left", true);
 			transform.Translate (new Vector3 (-moveSpeed, 0, 0) * Time.deltaTime);
+
 		}
 		else
 			anim.SetFloat ("SpeedLeft", Mathf.Abs (0F));
@@ -34,6 +36,7 @@ public class Movement : MonoBehaviour
 			anim.SetFloat("Speed", Mathf.Abs(3F));
 			anim.SetBool ("Left", false);
 			transform.Translate (new Vector3 (moveSpeed, 0, 0) * Time.deltaTime);
+
 		
 		}
 		else

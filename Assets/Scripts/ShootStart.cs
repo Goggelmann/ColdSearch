@@ -9,9 +9,7 @@ public class ShootStart : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
-		Vector3 sp = Camera.main.WorldToScreenPoint(transform.position);
-		Vector3 dir = (Input.mousePosition - sp).normalized;
-		GetComponent<Rigidbody>().AddForce (gameObject.transform.forward * velocity);
+		
 
 	}
 	
