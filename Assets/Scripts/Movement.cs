@@ -8,6 +8,8 @@ public class Movement : MonoBehaviour
 	public float jumpPower;
 	public bool isJumping = false;
 	private bool isGrounded;
+
+	public bool rightWalk = false;
 	public Transform target;
 
 	void Start ()
@@ -25,7 +27,9 @@ public class Movement : MonoBehaviour
 		{
 			anim.SetFloat("SpeedLeft", Mathf.Abs(3F)); 
 			anim.SetBool ("Left", true);
-			transform.Translate (new Vector3 (-moveSpeed, 0, 0) * Time.deltaTime);
+			transform.Translate (new Vector3 (moveSpeed, 0, 0) * Time.deltaTime);
+			transform.rotation = Quaternion.Euler (0, -180, 0);
+			rightWalk = true;
 
 		}
 		else
@@ -36,7 +40,8 @@ public class Movement : MonoBehaviour
 			anim.SetFloat("Speed", Mathf.Abs(3F));
 			anim.SetBool ("Left", false);
 			transform.Translate (new Vector3 (moveSpeed, 0, 0) * Time.deltaTime);
-
+			transform.rotation = Quaternion.Euler (0, 0, 0);
+			rightWalk = false;
 		
 		}
 		else
