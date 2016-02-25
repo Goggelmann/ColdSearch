@@ -4,9 +4,11 @@ using System.Collections;
 public class Gun : MonoBehaviour {
 
 	public GameObject bullet;
+
 	public float velocity = 20f;
 	public float rateOfFire = 0.5f;
-
+	public GameObject player;
+	private Movement playerMovement;
 	bool canShoot;
 
 
@@ -20,10 +22,26 @@ public class Gun : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		StartCoroutine (Reload (rateOfFire));
+		playerMovement = player.GetComponent<Movement> ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		Vector3 pos = Camera.main.WorldToScreenPoint(transform.position);
+		Vector3 dir = Input.mousePosition - pos;
+		float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+
+
+	
+		canShoot = false;
+		if (playerMovement.rightWalk && ((angle >= 120 && angle <= 180.0) || (angle <= -120.0 && angle >= -180.0))) {
+			canShoot = true;
+			StartCoroutine (Reload (rateOfFire));
+		} else if (!playerMovement.rightWalk && ((angle >= 0 && angle <= 60.0) || (angle <= -0 && angle >= -60.0))) {
+			canShoot = true;
+			StartCoroutine (Reload (rateOfFire));
+		}
+
 		if (Input.GetMouseButtonDown(0)&& canShoot)
 		{
 			Vector2 target = Camera.main.ScreenToWorldPoint( new Vector2(Input.mousePosition.x,  Input.mousePosition.y) );
@@ -36,5 +54,9 @@ public class Gun : MonoBehaviour {
 			canShoot = false;
 			StartCoroutine (Reload (rateOfFire));
 		}
+	
+
+	
+
 	}
 }
