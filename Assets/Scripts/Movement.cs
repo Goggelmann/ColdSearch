@@ -25,7 +25,7 @@ public class Movement : MonoBehaviour
 		//Settings for the parameters in the Animator Controller
 		if(Input.GetKey(KeyCode.A))
 		{
-			anim.SetFloat("SpeedLeft", Mathf.Abs(3F)); 
+			anim.SetFloat("Speed", Mathf.Abs(3F)); 
 			anim.SetBool ("Left", true);
 			transform.Translate (new Vector3 (moveSpeed, 0, 0) * Time.deltaTime);
 			transform.rotation = Quaternion.Euler (0, -180, 0);
@@ -33,7 +33,7 @@ public class Movement : MonoBehaviour
 
 		}
 		else
-			anim.SetFloat ("SpeedLeft", Mathf.Abs (0F));
+			anim.SetFloat ("Speed", Mathf.Abs (0F));
 		
 		if(Input.GetKey(KeyCode.D))
 		{	
