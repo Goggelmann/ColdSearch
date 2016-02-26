@@ -9,9 +9,9 @@ public class Movement : MonoBehaviour
 	public bool isJumping = false;
 	private bool isGrounded;
 
-	public bool rightWalk = false;
-	public Transform target;
 
+	public Transform target;
+	public bool facingRight = true;
 	void Start ()
 	{
 		anim = GetComponent<Animator>();
@@ -21,31 +21,25 @@ public class Movement : MonoBehaviour
 	void Update ()
 	{
 		
-
+		//anim.SetFloat("Speed", Mathf.Abs(0));
 		//Settings for the parameters in the Animator Controller
-		if(Input.GetKey(KeyCode.A))
+
+		float h = Input.GetAxisRaw ("Horizontal");
+		anim.SetFloat("Speed", Mathf.Abs(h)); 
+		transform.Translate (new Vector3 (h* moveSpeed, 0, 0) * Time.deltaTime);
+
+		if(h>0 && !facingRight)
 		{
-			anim.SetFloat("Speed", Mathf.Abs(3F)); 
-			anim.SetBool ("Left", true);
-			transform.Translate (new Vector3 (moveSpeed, 0, 0) * Time.deltaTime);
-			transform.rotation = Quaternion.Euler (0, -180, 0);
-			rightWalk = true;
+			Flip ();
+			facingRight = true;
 
 		}
-		else
-			anim.SetFloat ("Speed", Mathf.Abs (0F));
-		
-		if(Input.GetKey(KeyCode.D))
-		{	
-			anim.SetFloat("Speed", Mathf.Abs(3F));
-			anim.SetBool ("Left", false);
-			transform.Translate (new Vector3 (moveSpeed, 0, 0) * Time.deltaTime);
-			transform.rotation = Quaternion.Euler (0, 0, 0);
-			rightWalk = false;
-		
-		}
-		else
-			anim.SetFloat ("Speed", Mathf.Abs (0F));
+		if(h<0 && facingRight)
+		{
+			Flip ();
+			facingRight = false;
+
+		}			
 
 		if(Input.GetKeyDown(KeyCode.Space))
 		{
@@ -61,8 +55,12 @@ public class Movement : MonoBehaviour
 
 	}
 
-
-
+	void Flip()
+	{
+		Vector3 fscale = transform.localScale;
+		fscale.x *= -1;
+		transform.localScale = fscale;
+	}
 
 	void OnCollisionEnter (Collision col)
 	{

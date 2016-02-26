@@ -34,10 +34,10 @@ public class Gun : MonoBehaviour {
 
 	
 		canShoot = false;
-		if (playerMovement.rightWalk && ((angle >= 120 && angle <= 180.0) || (angle <= -120.0 && angle >= -180.0))) {
+		if (!playerMovement.facingRight && ((angle >= 120 && angle <= 180.0) || (angle <= -120.0 && angle >= -180.0))) {
 			canShoot = true;
 			StartCoroutine (Reload (rateOfFire));
-		} else if (!playerMovement.rightWalk && ((angle >= 0 && angle <= 60.0) || (angle <= -0 && angle >= -60.0))) {
+		} else if (playerMovement.facingRight && ((angle >= 0 && angle <= 60.0) || (angle <= -0 && angle >= -60.0))) {
 			canShoot = true;
 			StartCoroutine (Reload (rateOfFire));
 		}
