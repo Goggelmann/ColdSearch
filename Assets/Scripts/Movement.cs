@@ -10,6 +10,8 @@ public class Movement : MonoBehaviour
 	private bool isGrounded;
 
 
+	public Transform target;
+	public bool facingRight = true;
 	void Start ()
 	{
 		anim = GetComponent<Animator>();
@@ -18,26 +20,26 @@ public class Movement : MonoBehaviour
 
 	void Update ()
 	{
-
+		
+		//anim.SetFloat("Speed", Mathf.Abs(0));
 		//Settings for the parameters in the Animator Controller
-		if(Input.GetKey(KeyCode.A))
+
+		float h = Input.GetAxisRaw ("Horizontal");
+		anim.SetFloat("Speed", Mathf.Abs(h)); 
+		transform.Translate (new Vector3 (h* moveSpeed, 0, 0) * Time.deltaTime);
+
+		if(h>0 && !facingRight)
 		{
-			anim.SetFloat("SpeedLeft", Mathf.Abs(3F)); 
-			anim.SetBool ("Left", true);
-			transform.Translate (new Vector3 (-moveSpeed, 0, 0) * Time.deltaTime);
+			Flip ();
+			facingRight = true;
+
 		}
-		else
-			anim.SetFloat ("SpeedLeft", Mathf.Abs (0F));
-		
-		if(Input.GetKey(KeyCode.D))
-		{	
-			anim.SetFloat("Speed", Mathf.Abs(3F));
-			anim.SetBool ("Left", false);
-			transform.Translate (new Vector3 (moveSpeed, 0, 0) * Time.deltaTime);
-		
-		}
-		else
-			anim.SetFloat ("Speed", Mathf.Abs (0F));
+		if(h<0 && facingRight)
+		{
+			Flip ();
+			facingRight = false;
+
+		}			
 
 		if(Input.GetKeyDown(KeyCode.Space))
 		{
@@ -45,7 +47,7 @@ public class Movement : MonoBehaviour
 
 			{
 				anim.SetBool ("Jumping", true);
-				GetComponent<Rigidbody>().AddForce (Vector2.up * jumpPower);
+				GetComponent<Rigidbody2D>().AddForce (Vector2.up * jumpPower);
 
 				isJumping = false; //Avoids Multible Jumps
 			}
@@ -53,10 +55,14 @@ public class Movement : MonoBehaviour
 
 	}
 
+	void Flip()
+	{
+		Vector3 fscale = transform.localScale;
+		fscale.x *= -1;
+		transform.localScale = fscale;
+	}
 
-
-
-	void OnCollisionEnter (Collision col)
+	void OnCollisionEnter2D (Collision2D col)
 	{
 		if (col.gameObject.tag == "Ground")
 		{
